@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
       drawLine(line.x0, line.y0, line.x1, line.y1, line.color, line.emit);
    });
 
+   socket.on('clear', clear);
+
    // Set the canvas size
    canvas.width = window.innerWidth;
    canvas.height = window.innerHeight - document.getElementById('toolbar').offsetHeight;
@@ -73,9 +75,15 @@ document.addEventListener('DOMContentLoaded', function () {
    });
 
    // Clear the canvas
-   clearButton.addEventListener('click', function () {
-      context.clearRect(0, 0, canvas.width, canvas.height);
+   clearButton.addEventListener('click', function () { // When the user clicks clear, 2 clear commands will execute with the current implementaiton
+      clear();
+      socket.emit('clear');
    });
+
+   function clear() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      console.log("clear");
+   }
 
    // Eraser tool
    eraserButton.addEventListener('click', function () {
