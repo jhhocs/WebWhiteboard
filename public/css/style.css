@@ -7,11 +7,14 @@ html {
 }
 
 #toolbar {
-   padding: 10px;
-   background: #f1f1f1;
+   background-color: #fff;
+   margin-left: 0.1rem;
+   padding: 0.25rem;
    display: flex;
    justify-content: start;
    align-items: center;
+   /* flex-direction: column; */
+   gap: 1rem;
 }
 
 #whiteboard {
@@ -21,3 +24,37 @@ html {
    /* Set a background color that does not conflict with the drawing color */
    background-color: #fff;
 }
+
+#clear {
+   border-radius: 50%;
+   height: 2rem;
+   width: 2rem;
+}
+
+#eraser {
+   border-radius: 50%;
+   height: 2rem;
+   width: 2rem;
+}
+
+.color-input-wrapper {
+   height: 2rem;
+   width: 2rem;
+   overflow: hidden;
+   border-radius: 50%;
+   display: inline-flex;
+   align-items: center;
+   position: relative;
+ }
+ .color-input-wrapper  input[type=color] {
+     position: absolute;
+     height: 4rem;
+     width: 4rem;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     overflow: hidden;
+     border: none;
+     margin: 0;
+     padding: 0;
+   }
