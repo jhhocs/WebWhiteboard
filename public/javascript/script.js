@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', function () {
    var clearButton = document.getElementById('clear');
    var eraserButton = document.getElementById('eraser');
 
+   const socket = io();
+
+   socket.on('draw', (line) => {
+      drawLine(line.x0, line.y0, line.x1, line.y1, line.color, line.emit);
+   });
+
    // Set the canvas size
    canvas.width = window.innerWidth;
    canvas.height = window.innerHeight - document.getElementById('toolbar').offsetHeight;
@@ -25,6 +31,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (!emit) { return; }
       // This will be used for real-time event handling
+      let line = {
+         x0: x0,
+         y0: y0,
+         x1: x1,
+         y1: y1,
+         color: color,
+         emit: false
+      }
+
+      socket.emit('draw', line);
+
    };
 
    canvas.addEventListener('mousedown', function (e) {
