@@ -29,12 +29,25 @@ html {
    border-radius: 50%;
    height: 2rem;
    width: 2rem;
+   display: flex;
+   justify-content: center;
+   align-items: center;
 }
 
 #eraser {
    border-radius: 50%;
    height: 2rem;
    width: 2rem;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+#eraser img {
+   width: 1rem;
+}
+#clear img {
+   width: 1.25rem;
 }
 
 .color-input-wrapper {
