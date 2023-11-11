@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', function () {
    socket.on('clear', clear);
 
    // Set the canvas size
-   canvas.width = window.innerWidth;
-   canvas.height = window.innerHeight - document.getElementById('toolbar').offsetHeight;
+   canvas.width = window.innerWidth - 20;
+   canvas.height = window.innerHeight - document.getElementById('toolbar').offsetHeight - 20;
 
    var drawing = false;
    var current = {
