@@ -1,9 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
    var canvas = document.getElementById('whiteboard');
    var context = canvas.getContext('2d');
-   var colorPicker = document.getElementById('color-picker');
-   var clearButton = document.getElementById('clear');
-   var eraserButton = document.getElementById('eraser');
+
+   let toolbar = document.getElementById('toolbar');
 
    const socket = io();
 
@@ -14,15 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
    socket.on('clear', clear);
 
    // Set the canvas size
-   canvas.width = window.innerWidth - 20;
-   canvas.height = window.innerHeight - document.getElementById('toolbar').offsetHeight - 20;
+   const canvasOffsetX = canvas.offsetLeft;
+   const canvasOffsetY = canvas.offsetTop;
+   canvas.width = window.innerWidth - canvasOffsetX;
+   canvas.height = window.innerHeight - document.getElementById('toolbar').offsetHeight - canvasOffsetY;
 
    var drawing = false;
    var current = {
-      color: 'black'
+      color: 'black',
    };
 
-   var drawLine = function (x0, y0, x1, y1, color, emit) {
+   function drawLine (x0, y0, x1, y1, color, emit) {
       context.beginPath();
       context.moveTo(x0, y0);
       context.lineTo(x1, y1);
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       socket.emit('draw', line);
-
+ 
    };
 
    canvas.addEventListener('mousedown', function (e) {
@@ -69,24 +70,27 @@ document.addEventListener('DOMContentLoaded', function () {
       drawing = false;
    });
 
-   // Change the current color
-   colorPicker.addEventListener('change', function (e) {
-      current.color = e.target.value;
-   });
-
-   // Clear the canvas
-   clearButton.addEventListener('click', function () { // When the user clicks clear, 2 clear commands will execute with the current implementaiton
-      clear();
-      socket.emit('clear');
-   });
-
    function clear() {
       context.clearRect(0, 0, canvas.width, canvas.height);
       console.log("clear");
    }
 
-   // Eraser tool
-   eraserButton.addEventListener('click', function () {
-      current.color = '#ffffff'; // Set the current color to white (or the background color of your canvas)
-   });
+   toolbar.addEventListener('click', (e) => {
+      // Clear tool
+      if(e.target.id === 'clear') {
+         clear()
+         socket.emit('clear');
+      }
+      // Eraser tool
+      if (e.target.id === 'eraser') {
+         current.color = '#FFFFFF';
+      }
+   })
+
+   toolbar.addEventListener('change', (e) => {
+      // Color picker
+      if (e.target.id === 'color-picker') {
+         current.color = e.target.value;
+      }
+   })
 });

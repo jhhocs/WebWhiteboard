@@ -6,6 +6,10 @@ html {
    flex-direction: column;
 }
 
+#whiteboard {
+   
+}
+
 #toolbar {
    background-color: #f1f1f1;;
    margin-left: 0.1rem;
@@ -45,9 +49,11 @@ html {
 
 #eraser img {
    width: 1rem;
+   pointer-events: none;
 }
 #clear img {
    width: 1.25rem;
+   pointer-events: none;
 }
 
 .color-input-wrapper {
