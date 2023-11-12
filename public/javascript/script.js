@@ -5,12 +5,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
    const socket = io();
 
-   socket.on('startStroke', (e) => {
-      startStroke(e);
+   socket.on('startStroke', (line) => {
+      startStroke(line);
    })
 
-   socket.on('endStroke', (e) => {
-      endStroke(e);
+   socket.on('endStroke', (line) => {
+      endStroke(line);
    })
 
    socket.on('stroke', stroke);
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!line.drawing) return;
       context.lineWidth = line.lineWidth;
       context.lineCap = 'round';
-      context.strokeStyle = current.color
+      context.strokeStyle = line.color
       context.lineTo(line.x-canvasOffsetX, line.y-canvasOffsetY);
       context.stroke();
    }

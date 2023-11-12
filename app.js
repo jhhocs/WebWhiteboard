@@ -23,22 +23,17 @@ module.exports = router;
 
 io.on('connection', (socket) => {
   console.log("User connected");
-  socket.on('draw', (line) => {
-    io.emit('draw', line);
-  });
   socket.on('clear', () => {
     io.emit('clear');
   });
-  socket.on('startStroke', (e) => {
-    io.emit('startStroke', e);
+  socket.on('startStroke', (line) => {
+    io.emit('startStroke', line);
  });
-
- socket.on('endStroke', (e) => {
-    io.emit('endStroke', e);
+ socket.on('endStroke', (line) => {
+    io.emit('endStroke', line);
  });
-
- socket.on('stroke', (e) => {
-    io.emit('stroke', e);
+ socket.on('stroke', () => {
+    io.emit('stroke');
  });
   socket.on('disconnect', () => {
     console.log('User disconnected');
