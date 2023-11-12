@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
    // Set the canvas size
    const canvasOffsetX = canvas.offsetLeft;
    const canvasOffsetY = canvas.offsetTop;
-   canvas.width = window.innerWidth - canvasOffsetX;
-   canvas.height = window.innerHeight - document.getElementById('toolbar').offsetHeight - canvasOffsetY;
+   canvas.width = window.innerWidth - 2*canvasOffsetX;
+   canvas.height = window.innerHeight - canvasOffsetY;
 
    let current = {
       drawing: false,
