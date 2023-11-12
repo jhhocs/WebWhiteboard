@@ -13,7 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
       endStroke(line);
    })
 
-   socket.on('stroke', stroke);
+   socket.on('stroke', (line) => {
+      stroke(line);
+   });
 
    socket.on('clear', clear);
 
@@ -49,31 +51,31 @@ document.addEventListener('DOMContentLoaded', function () {
    function endStroke() {
       current.drawing = false;
       context.stroke();
-      context.beginPath()
+      context.beginPath();
    }
 
    canvas.addEventListener('mousedown', function (e) {
       current.x = e.clientX;
       current.y = e.clientY;
       startStroke(current);
-      socket.emit('startStroke', current)
+      socket.emit('startStroke', current);
    });
 
    canvas.addEventListener('mousemove', function (e) {
       current.x = e.clientX;
       current.y = e.clientY;
       stroke(current);
-      socket.emit('stroke', current)
+      socket.emit('stroke', current);
    });
 
    canvas.addEventListener('mouseup', function (e) {
-      endStroke()
-      socket.emit('endStroke')
+      endStroke();
+      socket.emit('endStroke');
    });
 
    canvas.addEventListener('mouseleave', () => {
-      endStroke()
-      socket.emit('endStroke')
+      endStroke();
+      socket.emit('endStroke');
    });
 
    function clear() {

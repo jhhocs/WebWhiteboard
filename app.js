@@ -32,8 +32,8 @@ io.on('connection', (socket) => {
  socket.on('endStroke', (line) => {
     io.emit('endStroke', line);
  });
- socket.on('stroke', () => {
-    io.emit('stroke');
+ socket.on('stroke', (line) => {
+    io.emit('stroke', line);
  });
   socket.on('disconnect', () => {
     console.log('User disconnected');
