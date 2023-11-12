@@ -71,6 +71,11 @@ document.addEventListener('DOMContentLoaded', function () {
       socket.emit('endStroke')
    });
 
+   canvas.addEventListener('mouseleave', () => {
+      endStroke()
+      socket.emit('endStroke')
+   });
+
    function clear() {
       context.clearRect(0, 0, canvas.width, canvas.height);
       console.log("clear");
