@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (e.target.id === 'color-picker') {
          current.color = e.target.value;
       }
+      // Width picker
       if (e.target.id === 'width-picker') {
          current.lineWidth = e.target.value;
       }
