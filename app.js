@@ -28,7 +28,18 @@ io.on('connection', (socket) => {
   });
   socket.on('clear', () => {
     io.emit('clear');
-  })
+  });
+  socket.on('startStroke', (e) => {
+    io.emit('startStroke', e);
+ });
+
+ socket.on('endStroke', (e) => {
+    io.emit('endStroke', e);
+ });
+
+ socket.on('stroke', (e) => {
+    io.emit('stroke', e);
+ });
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });
