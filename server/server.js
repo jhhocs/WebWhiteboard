@@ -2,27 +2,22 @@
 
 const express = require('express');
 const { createServer } = require('http');
-//const { join } = require('node:path');
 const { Server } = require('socket.io');
+const cors = require("cors");
+
 
 const app = express();
+app.use(cors());
 const server = createServer(app);
-const io = new Server(server);
-const router = express.Router();
-
-app.use(express.static(__dirname + '/public/html'));
-app.use(express.static(__dirname + '/public/css'));
-app.use(express.static(__dirname + '/public'));
-app.use('/', router);
-
-router.get('/', (req, res) => {
-  res.sendFile('/html/index.html');
+const io = new Server(server, {
+    cors: {
+        //origin: "http://localhost:3000",
+        origin: '*',
+    }
 });
 
-module.exports = router;
-
 io.on('connection', (socket) => {
-  console.log("User connected");
+  console.log("User connected: " + socket.id);
   socket.on('clear', () => {
     io.emit('clear');
   });
@@ -40,6 +35,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log('server running at http://localhost:3000');
+server.listen(3001, () => {
+  console.log('server running at http://localhost:3001');
 });
