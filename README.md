@@ -1,10 +1,16 @@
 # WebWhiteboard
 
-To run program:
+Run client:
 
-```node app.js```
+1. Navigate into client directory
+2. Run ```npm start```
 
+Run server:
 
-Run to update css files automatically:
+1. Navigate into server directory
+2. Run ```npm start```
 
-```npm run scss```
+Deploying client to GitHub pages:
+
+1. Navigate into client directory
+2. Run ```npm deploy```
