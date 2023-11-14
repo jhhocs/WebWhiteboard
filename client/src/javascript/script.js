@@ -4,8 +4,7 @@ setTimeout(() => {
    let context = canvas.getContext('2d');
    let toolbar = document.getElementById('toolbar');
 
-   const socket = io.connect("https://websocket-test-ad1c.onrender.com");
-   console.log("asdf")
+   const socket = io.connect("https://webwhiteboard.onrender.com");
 
    socket.on('startStroke', (line) => {
       startStroke(line);
