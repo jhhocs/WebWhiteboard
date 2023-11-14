@@ -13,4 +13,4 @@ Run server:
 Deploying client to GitHub pages:
 
 1. Navigate into client directory
-2. Run ```npm deploy```
+2. Run ```npm run deploy```
