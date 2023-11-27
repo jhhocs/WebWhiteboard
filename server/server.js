@@ -18,18 +18,31 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
   console.log("User connected: " + socket.id);
-  socket.on('clear', () => {
-    io.emit('clear');
+  // socket.join("temp");
+
+  socket.on('joinRoom', (room) => {
+    socket.join(room);
+    // socket.join("temp");
+  });
+
+  socket.on('clear', (room) => {
+    // io.to("temp").emit('clear');
+    io.to(room).emit('clear')
+    // io.emit('clear');
   });
   socket.on('startStroke', (line) => {
-    io.emit('startStroke', line);
- });
- socket.on('endStroke', (line) => {
-    io.emit('endStroke', line);
- });
- socket.on('stroke', (line) => {
-    io.emit('stroke', line);
- });
+    console.log(line.room);
+    io.to(line.room).emit('startStroke', line);
+    // io.emit('startStroke', line);
+  });
+  socket.on('endStroke', (line) => {
+    io.to(line.room).emit('endStroke', line);
+      // io.emit('endStroke', line);
+  });
+  socket.on('stroke', (line) => {
+    io.to(line.room).emit('stroke', line);
+      // io.emit('stroke', line);
+  });
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });
