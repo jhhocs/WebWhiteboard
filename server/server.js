@@ -32,15 +32,15 @@ io.on('connection', (socket) => {
   });
   socket.on('startStroke', (line) => {
     console.log(line.room);
-    io.to(line.room).emit('startStroke', line);
+    io.to(line.room).emit('startStroke', line.line);
     // io.emit('startStroke', line);
   });
   socket.on('endStroke', (line) => {
-    io.to(line.room).emit('endStroke', line);
+    io.to(line.room).emit('endStroke', line.line);
       // io.emit('endStroke', line);
   });
   socket.on('stroke', (line) => {
-    io.to(line.room).emit('stroke', line);
+    io.to(line.room).emit('stroke', line.line);
       // io.emit('stroke', line);
   });
   socket.on('disconnect', () => {

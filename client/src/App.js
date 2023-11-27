@@ -68,21 +68,22 @@ function App() {
         };
     
         socket.on('startStroke', (line) => {
-          if (line.line.userID === userID) {
+
+          if (line.userID === userID) {
             return;
           }
           startStroke(line);
         })
     
         socket.on('endStroke', (line) => {
-            if (line.line.userID === userID) {
+            if (line.userID === userID) {
               return;
             }
             endStroke(line);
         })
     
         socket.on('stroke', (line) => {
-          if (line.line.userID === userID) {
+          if (line.userID === userID) {
             return;
           }
           stroke(line);
@@ -106,41 +107,42 @@ function App() {
         }
     
         function startStroke(line) {
-          current.drawing = true;
-          current.x = line.x;
-          current.y = line.y;
+          // console.log(line);
+          current.line.drawing = true;
+          current.line.x = line.x;
+          current.line.y = line.y;
         }
     
         function endStroke(line) {
-          current.drawing = false;
+          current.line.drawing = false;
           context.stroke();
           context.beginPath();
         }
     
         canvas.addEventListener('mousedown', function (e) {
-          current.x = e.clientX;
-          current.y = e.clientY;
-          startStroke(current);
+          current.line.x = e.clientX;
+          current.line.y = e.clientY;
+          startStroke(current.line);
 
           socket.emit('startStroke', current);
         });
     
         canvas.addEventListener('mousemove', function (e) {
-            current.x = e.clientX;
-            current.y = e.clientY;
-            stroke(current);
+            current.line.x = e.clientX;
+            current.line.y = e.clientY;
+            stroke(current.line);
 
             socket.emit('stroke', current);
         });
     
         canvas.addEventListener('mouseup', function (e) {
-            endStroke(current);
+            endStroke(current.line);
 
             socket.emit('endStroke', current);
         });
     
         canvas.addEventListener('mouseleave', () => {
-            endStroke(current);
+            endStroke(current.line);
 
             socket.emit('endStroke', current);
         });
@@ -159,18 +161,18 @@ function App() {
         }
         // Eraser tool
         if (e.target.id === 'eraser') {
-          current.color = '#FFFFFF';
+          current.line.color = '#FFFFFF';
         }
       })
   
       toolbar.addEventListener('change', (e) => {
           // Color picker
           if (e.target.id === 'color-picker') {
-            current.color = e.target.value;
+            current.line.color = e.target.value;
           }
           // Width picker
           if (e.target.id === 'width-picker') {
-            current.lineWidth = e.target.value;
+            current.line.lineWidth = e.target.value;
           }
       })
     }
