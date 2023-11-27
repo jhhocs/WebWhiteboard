@@ -40,8 +40,6 @@ function App() {
   useEffect(() => {
     const toolbar = toolbarRef.current;
     const canvas = canvasRef.current
-    console.log(toolbar);
-    console.log(canvas);
 
     if(userID) {
       start();
@@ -65,26 +63,26 @@ function App() {
             lineWidth: '2',
             x: 0,
             y: 0,
-            sessionID: userID
+            userID: userID
           }
         };
     
         socket.on('startStroke', (line) => {
-          if (line.sessionID === userID) {
+          if (line.line.userID === userID) {
             return;
           }
           startStroke(line);
         })
     
         socket.on('endStroke', (line) => {
-            if (line.sessionID === userID) {
+            if (line.line.userID === userID) {
               return;
             }
             endStroke(line);
         })
     
         socket.on('stroke', (line) => {
-          if (line.sessionID === userID) {
+          if (line.line.userID === userID) {
             return;
           }
           stroke(line);
