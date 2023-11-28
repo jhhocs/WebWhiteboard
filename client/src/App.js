@@ -79,7 +79,7 @@ function App() {
             if (line.userID === userID) {
               return;
             }
-            endStroke(line);
+            emitEndStroke(line);
         })
     
         socket.on('stroke', (line) => {
@@ -118,13 +118,18 @@ function App() {
           context.stroke();
           context.beginPath();
         }
+
+        function emitEndStroke(line) {
+          context.stroke();
+          context.beginPath();
+        }
     
         canvas.addEventListener('mousedown', function (e) {
           current.line.x = e.clientX;
           current.line.y = e.clientY;
           startStroke(current.line);
 
-          socket.emit('startStroke', current);
+          // socket.emit('startStroke', current);
         });
     
         canvas.addEventListener('mousemove', function (e) {
@@ -181,7 +186,7 @@ function App() {
   return (
     <div className="App">
       <Toolbar ref = {toolbarRef}/>
-      <Canvas ref = {canvasRef}/>
+      <Canvas ref = {canvasRef} />
     </div>
   
   );
