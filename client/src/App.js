@@ -61,6 +61,8 @@ function App() {
             drawing: false,
             color: 'black',
             lineWidth: '2',
+            lastx: 0,
+            lasty: 0,
             x: 0,
             y: 0,
             userID: userID
@@ -102,6 +104,7 @@ function App() {
           context.lineWidth = line.lineWidth;
           context.lineCap = 'round';
           context.strokeStyle = line.color
+          context.moveTo(line.lastx-canvasOffsetX, line.lasty-canvasOffsetY);
           context.lineTo(line.x-canvasOffsetX, line.y-canvasOffsetY);
           context.stroke();
         }
@@ -125,6 +128,8 @@ function App() {
         }
     
         canvas.addEventListener('mousedown', function (e) {
+          current.line.lastx = current.line.x;
+          current.line.lasty = current.line.y;
           current.line.x = e.clientX;
           current.line.y = e.clientY;
           startStroke(current.line);
@@ -133,6 +138,8 @@ function App() {
         });
     
         canvas.addEventListener('mousemove', function (e) {
+            current.line.lastx = current.line.x;
+            current.line.lasty = current.line.y;
             current.line.x = e.clientX;
             current.line.y = e.clientY;
             stroke(current.line);
