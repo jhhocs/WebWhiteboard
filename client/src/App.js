@@ -117,6 +117,7 @@ function App() {
     
         function endStroke(line) {
           current.line.drawing = false;
+          context.strokeStyle = line.color;
           context.stroke();
           context.beginPath();
         }
