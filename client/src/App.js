@@ -103,17 +103,16 @@ function App() {
           if (!line.drawing) return;
           context.lineWidth = line.lineWidth;
           context.lineCap = 'round';
-          context.strokeStyle = line.color
           context.moveTo(line.lastx-canvasOffsetX, line.lasty-canvasOffsetY);
           context.lineTo(line.x-canvasOffsetX, line.y-canvasOffsetY);
           context.stroke();
         }
     
         function startStroke(line) {
-          // console.log(line);
           current.line.drawing = true;
           current.line.x = line.x;
           current.line.y = line.y;
+          context.strokeStyle = line.color;
         }
     
         function endStroke(line) {
