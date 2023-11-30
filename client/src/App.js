@@ -174,6 +174,10 @@ function App() {
         if (e.target.id === "eraser") {
           current.line.color = "#FFFFFF";
         }
+        // Color picker w/out changing color
+        if (e.target.id === "color-picker") {
+          current.line.color = e.target.value;
+        }
       });
 
       toolbar.addEventListener("change", (e) => {
