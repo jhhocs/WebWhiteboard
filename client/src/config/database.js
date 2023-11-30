@@ -1,38 +1,29 @@
 // database.js
-const mysql = require('mysql');
+const { MongoClient } = require("mongodb");
 
-// MySQL database configuration
-const dbConfig = {
-  host: 'your-database-host',
-  user: 'your-username',
-  password: 'your-password',
-  database: 'your-database-name',
-};
+const url = "mongodb://localhost:3000/WB-database";
+const dbName = "WB-database";
 
-// Create a connection pool
-const pool = mysql.createPool(dbConfig);
+let db;
 
-// Wrap the pool in a promise for easier async/await handling
-const query = (sql, values) => {
-  return new Promise((resolve, reject) => {
-    pool.getConnection((err, connection) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      connection.query(sql, values, (error, results) => {
-        connection.release();
-
-        if (error) {
-          reject(error);
-          return;
-        }
-
-        resolve(results);
-      });
+const connectToMongo = async () => {
+  try {
+    const client = await MongoClient.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
-  });
+    db = client.db(dbName);
+    console.log("Successfully connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+  }
 };
 
-module.exports = query;
+const getDb = () => {
+  if (!db) {
+    throw Error("No database connection");
+  }
+  return db;
+};
+
+module.exports = { connectToMongo, getDb };

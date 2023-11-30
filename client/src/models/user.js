@@ -1,5 +1,5 @@
 // user.js
-const mysql = require('mysql');
+const { getDb } = require("./database");
 
 class User {
   constructor(id, username, email) {
@@ -8,12 +8,27 @@ class User {
     this.email = email;
   }
 
-  static getAllUsers() {
-    // Implement logic to fetch all users from the database
+  static async getAllUsers() {
+    try {
+      const db = getDb();
+      return await db.collection("users").find({}).toArray();
+    } catch (error) {
+      console.error("Error getting users:", error);
+      throw error;
+    }
   }
 
-  static createUser(username, email) {
-    // Implement logic to create a new user in the database
+  static async createUser(username, email) {
+    try {
+      const db = getDb();
+      const result = await db
+        .collection("users")
+        .insertOne({ username, email });
+      return new User(result.insertedId, username, email);
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
+    }
   }
 }
 
