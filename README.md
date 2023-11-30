@@ -17,8 +17,3 @@ Deploying client to GitHub pages with GitHub Actions: (Recommended)
 1. Navigate to the Actions tab
 2. In the left sidebar, select "Deploy to GitHub Pages"
 3. Select the "Run workflow" dropdown and run the workflow from the main branch
-
-Deploying client to GitHub pages from local machine: ()
-
-1. Navigate into client directory
-2. Run ```npm run deploy```

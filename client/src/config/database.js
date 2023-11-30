@@ -1,4 +1,3 @@
-// database.js
 const { MongoClient } = require("mongodb");
 
 const url = "mongodb://localhost:3000/WB-database";

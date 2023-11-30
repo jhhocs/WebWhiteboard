@@ -6,6 +6,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const { connectToMongo } = require("./database");
 require("dotenv").config();
+const User = require("./user");
 
 const app = express();
 app.use(cors());
@@ -20,8 +21,28 @@ const io = new Server(server, {
 // Connect to MongoDB
 connectToMongo();
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+// Middleware to parse JSON request bodies
+app.use(express.json());
+app.use(cors());
+
+// Express Routes
+app.get("/users", async (req, res) => {
+  try {
+    const users = await User.getAllUsers();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post("/users", async (req, res) => {
+  try {
+    const { username, email } = req.body;
+    const newUser = await User.createUser(username, email);
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 io.on("connection", (socket) => {
@@ -56,6 +77,9 @@ io.on("connection", (socket) => {
   });
 });
 
+// Define the port
+const port = process.env.PORT || 3001;
+
 server.listen(3001, () => {
-  console.log("server running at http://localhost:3001");
+  console.log("server running at http://localhost:${port}");
 });

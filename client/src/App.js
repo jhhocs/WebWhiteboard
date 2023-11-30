@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useRef, useEffect, forwardRef } from "react";
+import { useState, useRef, useEffect, forwardRef } from "react";
+import CircularCursor from "./CircularCursor";
 import "./App.css";
 import { socket } from "./socket";
 
@@ -38,6 +39,7 @@ function App() {
 
   const toolbarRef = useRef(null);
   const canvasRef = useRef(null);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 }); // Cursor position state
 
   useEffect(() => {
     const toolbar = toolbarRef.current;
@@ -191,34 +193,22 @@ function App() {
         }
       });
 
-      // Circular cursor
-      $(document).ready(function() {
-        $(document).on('mousemove', function(e) {
-          $('#circularcursor').css({
-            left: e.pageX,
-            top: e.pageY
-          });
-        })
-      });
-      document.body.onmousemove = function(e) {
-        document.documentElement.style.setProperty (
-          '--x', (
-            e.clientX+window.scrollX
-          )
-          + 'px'
-        );
-        document.documentElement.style.setProperty (
-          '--y', (
-            e.clientY+window.scrollY
-          ) 
-          + 'px'
-        );
-      }
+      // Add event listener for mouse movement
+      const moveCursor = (e) => {
+        setCursorPosition({ x: e.pageX, y: e.pageY });
+      };
+      document.addEventListener("mousemove", moveCursor);
+
+      // Cleanup
+      return () => {
+        document.removeEventListener("mousemove", moveCursor);
+      };
     }
   }, []);
 
   return (
     <div className="App">
+      <CircularCursor position={cursorPosition} />
       <Toolbar ref={toolbarRef} />
       <Canvas ref={canvasRef} />
     </div>

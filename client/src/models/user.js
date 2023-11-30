@@ -1,5 +1,4 @@
-// user.js
-const { getDb } = require("./database");
+const { getDb } = require("../config/database");
 
 class User {
   constructor(id, username, email) {
