@@ -10,9 +10,9 @@ function Home () {
             <main>
                 <h1>WebWhiteboard</h1>
                 <div>
-                    <button onClick = {() => setButtonPopup(true)}>Create Room</button>
+                    <button id="startButton" onClick = {() => setButtonPopup(true)}>Create Room</button>
                     <Popup trigger = {buttonPopup} setTrigger = {setButtonPopup}>
-                        <h3>Popup</h3>
+                        <h3>Create a room to start!</h3>
                     </Popup>
                     {/* <button>Join Room</button> */}
                 </div>

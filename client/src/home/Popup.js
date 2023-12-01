@@ -10,9 +10,9 @@ function Popup(props) {
             <div className = "popup">
                 { props.children }
                 {/* <input type = "text" placeholder = "Enter Room Name" value = {roomName} onChange = {(e) => setRoomName(e.target.value)}></input> */}
-                <button className = "cancelButton" onClick = {cancel}>Cancel</button>
+                <button className = "cancelButton" id="startButton" onClick = {cancel}>Cancel</button>
                 <Link to = {`room/${socket.id}`} props = {{roomID: socket.id}}>
-                    <button className = "createRoomButton" >Create Room</button>
+                    <button className = "createRoomButton" id="startButton">Create Room</button>
                 </Link>
             </div>
         </div>
