@@ -43,11 +43,12 @@ const Canvas = forwardRef(function Canvas(props, ref) {
 function App() {
   let { roomID } = useParams();
   let userID = socket.id;
-  console.log(roomID);
+  // console.log(roomID);
 
   const toolbarRef = useRef(null);
   const canvasRef = useRef(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 }); // Cursor position state
+  const [cursorSize, setCursorSize] = useState(2);
   const [isNotepadActive, setIsNotepadActive] = useState(false);
   const [notepadContent, setNotepadContent] = useState("");
 
@@ -187,6 +188,7 @@ function App() {
         current.line.x = e.clientX;
         current.line.y = e.clientY;
         startStroke(current.line);
+        stroke(current.line);
 
         // socket.emit('startStroke', current);
       });
@@ -212,6 +214,10 @@ function App() {
 
         socket.emit("endStroke", current);
       });
+      
+      // canvas.addEventListener("mouseenter", () => {
+
+      // });
 
       function clear() {
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -235,6 +241,18 @@ function App() {
         // Notepad tool
         if (e.target.id === "notepad") {
           toggleNotepad();
+        }
+      });
+
+      toolbar.addEventListener("change", (e) => {
+        // Color picker
+        if (e.target.id === "color-picker") {
+          current.line.color = e.target.value;
+        }
+        // Width picker
+        if (e.target.id === "width-picker") {
+          current.line.lineWidth = e.target.value;
+          setCursorSize(e.target.value)
         }
       });
 
@@ -271,17 +289,6 @@ function App() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         console.log("clear");
       }
-
-      toolbar.addEventListener("change", (e) => {
-        // Color picker
-        if (e.target.id === "color-picker") {
-          current.line.color = e.target.value;
-        }
-        // Width picker
-        if (e.target.id === "width-picker") {
-          current.line.lineWidth = e.target.value;
-        }
-      });
 
       // Add event listener for mouse movement
       const moveCursor = (e) => {
@@ -323,7 +330,7 @@ function App() {
           />
         </div>
       )}
-      <CircularCursor position={cursorPosition} />
+      <CircularCursor position={cursorPosition} size={cursorSize}/>
       <Toolbar ref={toolbarRef} />
       <Canvas ref={canvasRef} />
     </div>
