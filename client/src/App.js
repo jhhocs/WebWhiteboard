@@ -4,16 +4,21 @@ import CircularCursor from "./CircularCursor";
 import "./App.css";
 import { socket } from "./socket";
 
+const handleButtonClick = (cursorType) => {
+  // Modify CSS for the entire document
+  document.documentElement.style.cursor = cursorType;
+};
+
 const Toolbar = forwardRef(function Toolbar(props, ref) {
   return (
     <div id="toolbar" ref={ref}>
-      <button id="clear">
+      <button id="clear" onClick={() => handleButtonClick('default')}>
         <img src={require("./assets/clear.png")} alt="clear icon" />
       </button>
       <div className="color-input-wrapper">
-        <input type="color" id="color-picker" />
+        <input type="color" id="color-picker" onClick={() => handleButtonClick('default')}/>
       </div>
-      <button id="eraser">
+      <button id="eraser" onClick={() => handleButtonClick(`url(${require("./assets/erasercursor.png")}), auto`)}>
         <img src={require("./assets/eraser.png")} alt="eraser icon" />
       </button>
       <label htmlFor="width-picker">Radius</label>
