@@ -4,11 +4,6 @@ import CircularCursor from "./CircularCursor";
 import "./App.css";
 import { socket } from "./socket";
 
-const handleButtonClick = (cursorType) => {
-  // Modify CSS for the entire document
-  document.documentElement.style.cursor = cursorType;
-};
-
 const Toolbar = forwardRef(function Toolbar(props, ref) {
   return (
     <div id="toolbar" ref={ref}>
@@ -35,6 +30,11 @@ const Toolbar = forwardRef(function Toolbar(props, ref) {
     </div>
   );
 });
+
+const handleButtonClick = (cursorType) => {
+  // Modify CSS for the entire document
+  document.documentElement.style.cursor = cursorType;
+};
 
 const Canvas = forwardRef(function Canvas(props, ref) {
   return <canvas ref={ref} id="whiteboard"></canvas>;

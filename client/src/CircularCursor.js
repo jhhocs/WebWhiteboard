@@ -1,7 +1,7 @@
 const CircularCursor = ({ position }) => {
   const cursorStyle = {
-    left: `${position.x}px`,
-    top: `${position.y}px`,
+    left: `${position.x -10}px`,
+    top: `${position.y-8}px`,
     position: "absolute",
     pointerEvents: "none",
     backgroundColor: "transparent",
