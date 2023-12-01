@@ -23,6 +23,9 @@ const Toolbar = forwardRef(function Toolbar(props, ref) {
         id="width-picker"
         name="width-picker"
       />
+      <button id="notepad">
+        <img src={require("./assets/notepad.png")} alt="notepad icon" input type="color" id="color-picker2" />
+      </button>
       {/* <!-- Add more tools as needed --> */}
     </div>
   );
@@ -40,6 +43,45 @@ function App() {
   const toolbarRef = useRef(null);
   const canvasRef = useRef(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 }); // Cursor position state
+  const [isNotepadActive, setIsNotepadActive] = useState(false);
+  const [notepadContent, setNotepadContent] = useState("");
+
+  // Additional state for tracking sticky note position
+  const [stickyNotePosition, setStickyNotePosition] = useState({
+    top: 50,
+    left: 50,
+  });
+
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Function to handle dragging start
+  const handleDragStart = (e) => {
+    setIsDragging(true);
+  };
+  
+  // Function to handle dragging end
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+  
+  // Function to handle dragging
+  const handleDrag = (e) => {
+    if (isDragging) {
+      const newTop = e.clientY - 10; // Adjust the offset as needed
+      const newLeft = e.clientX - 10; // Adjust the offset as needed
+      setStickyNotePosition({ top: newTop, left: newLeft });
+    }
+  };
+  
+    useEffect(() => {
+      document.addEventListener("mousemove", handleDrag);
+      document.addEventListener("mouseup", handleDragEnd);
+  
+      return () => {
+        document.removeEventListener("mousemove", handleDrag);
+        document.removeEventListener("mouseup", handleDragEnd);
+      };
+  }, [isDragging]);
 
   useEffect(() => {
     const toolbar = toolbarRef.current;
@@ -180,7 +222,45 @@ function App() {
         if (e.target.id === "color-picker") {
           current.line.color = e.target.value;
         }
+        // Notepad tool
+        if (e.target.id === "notepad") {
+          toggleNotepad();
+        }
       });
+
+      function toggleNotepad() {
+        setIsNotepadActive((prev) => !prev);
+        
+        if (!isNotepadActive) {
+          // Set initial sticky note position when notepad becomes active
+          setStickyNotePosition({
+            top: 50, // Set the desired initial top position
+            left: 50, // Set the desired initial left position
+          });
+        }
+      
+        reduceCanvasSize();
+      }
+
+      function reduceCanvasSize() {
+        // Adjust canvas size for notepad
+        const notepadWidth = 300;
+        const canvasWidth = isNotepadActive ? window.innerWidth - notepadWidth : window.innerWidth;
+
+        canvas.width = canvasWidth;
+
+        // Adjust textarea/input width
+        const textarea = document.querySelector("textarea");
+        if (textarea) {
+          textarea.style.width = isNotepadActive ? notepadWidth + "px" : "100%";
+        }
+      }
+
+      function clearCanvas() {
+        const context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        console.log("clear");
+      }
 
       toolbar.addEventListener("change", (e) => {
         // Color picker
@@ -208,6 +288,31 @@ function App() {
 
   return (
     <div className="App">
+      {isNotepadActive && (
+        <div
+          style={{
+            position: "absolute",
+            top: `${stickyNotePosition.top}px`,
+            left: `${stickyNotePosition.left}px`,
+            zIndex: 2,
+          }}
+          onMouseDown={handleDragStart}
+        >
+          <textarea
+            value={notepadContent}
+            onChange={(e) => setNotepadContent(e.target.value)}
+            placeholder="Type here..."
+            style={{
+              width: isNotepadActive ? "300px" : "100%",
+              height: "200px", // Adjust the height as needed
+              border: "1px solid #ccc",
+              padding: "10px",
+              resize: "none",
+              background: "yellow"
+            }}
+          />
+        </div>
+      )}
       <CircularCursor position={cursorPosition} />
       <Toolbar ref={toolbarRef} />
       <Canvas ref={canvasRef} />
