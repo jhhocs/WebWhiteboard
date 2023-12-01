@@ -14,8 +14,9 @@ main {
     min-height: 100vh;
 }
 
-#startButton {
+#startButton, #joinButton{
     margin: 10px;
+    margin-top: 30px;
     background-color: #04AA6D; /* Green */
     padding: 15px 32px;
     color: white;
@@ -23,4 +24,9 @@ main {
     border-radius: 32px;
     text-align: center;
     font-size: 16px;
+}
+
+#startButton:hover, #joinButton:hover {
+    background-color: #05BB7E;
+    cursor: pointer;
 }

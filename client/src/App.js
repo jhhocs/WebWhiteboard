@@ -24,7 +24,7 @@ const Toolbar = forwardRef(function Toolbar(props, ref) {
         name="width-picker"
       />
       <button id="notepad">
-        <img src={require("./assets/notepad.png")} alt="notepad icon" input type="color" id="color-picker2" />
+        <img src={require("./assets/notepad.png")} alt="notepad icon" input="true" type="color" id="color-picker2" />
       </button>
       {/* <!-- Add more tools as needed --> */}
     </div>
@@ -94,6 +94,11 @@ function App() {
 
     if (userID) {
       start();
+    }
+
+    // Handles case where user joins from Home screen
+    if(socket.connected) {
+      socket.emit("joinRoom", roomID);
     }
 
     socket.on("connect", () => {

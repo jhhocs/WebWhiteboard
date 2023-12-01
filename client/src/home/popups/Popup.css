@@ -11,11 +11,13 @@
 }
 
 .popup {
-    position: relative;
+    /* position: relative; */
     padding: 40px;
     width: 100%;
     max-width: 720px;
     background-color: white;
+    display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
