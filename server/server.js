@@ -4,9 +4,10 @@ const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const { connectToMongo } = require("./database");
+// const { connectToMongo } = require("./database");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
-const User = require("./user");
+// const User = require("./user");
 
 const app = express();
 app.use(cors());
@@ -19,7 +20,46 @@ const io = new Server(server, {
 });
 
 // Connect to MongoDB
-connectToMongo();
+// connectToMongo();
+const database = new MongoClient(process.env.MONGODB_SERVER, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function connect() {
+  // try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await database.connect();
+    // Send a ping to confirm a successful connection
+    const myDB = database.db("DatabaseTest");
+    const myColl = myDB.collection("CollectionTest");
+
+    // const findResult = await myColl.find();
+
+    // for await (const doc of findResult) {
+    //   console.log(doc);
+    // }
+
+    // myColl.find();
+    // await database.db("DatabaseTest").command({ ping: 1 });  
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
+
+    // const myColl = database.collection("pizzaMenu");
+    // const doc = { name: "Other pizza", shape: "round" };
+    // const result = await myColl.insertOne(doc);
+    // console.log(
+    //   `A document was inserted with the _id: ${result.insertedId}`,
+    // );
+  // } 
+  // finally {
+  //   // Ensures that the client will close when you finish/error
+  //   await database.close();
+  // }
+}
+connect().catch(console.dir);
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -81,5 +121,5 @@ io.on("connection", (socket) => {
 const port = process.env.PORT || 3001;
 
 server.listen(3001, () => {
-  console.log("server running at http://localhost:${port}");
+  console.log(`server running at http://localhost:${port}`);
 });
