@@ -3,8 +3,6 @@ import { useState, useRef, useEffect, forwardRef } from "react";
 import CircularCursor from "./CircularCursor";
 import "./App.css";
 import { socket } from "./socket";
-import { Buffer } from 'buffer';
-window.Buffer = Buffer;
 
 const Toolbar = forwardRef(function Toolbar(props, ref) {
   return (
