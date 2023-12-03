@@ -146,14 +146,14 @@ function App() {
         stroke(line);
       });
 
-      socket.on("image", (buffer) => {
+      socket.on("loadImage", (dataURL) => {
         var img = new Image();
-        img.src = buffer;
+        img.src = dataURL;
         img.onload=start;
         function start() {
           context.drawImage(img, 0, 0)
         } 
-      })
+      });
 
       socket.on("clear", clear);
 
@@ -216,26 +216,7 @@ function App() {
         endStroke(current.line);
 
         var dataURL = canvas.toDataURL();
-        socket.emit("image", dataURL)
-
-        // var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        // var buffer = imageData.data;
-        // console.log(buffer)
-        // // setTimeout(() => {
-        //   clear();
-        // // }, 2000)
-
-        // // setTimeout(() => {
-        // socket.emit("image", {image: true, buffer: buffer.toString('base64')});
-          // var array = new Uint8ClampedArray(buffer);
-          // var image = new ImageData(array, canvas.width, canvas.height);
-
-          // context.putImageData(image, 0, 0)
-        // }, 4000)
-
-        // console.log(buffer);
-        // socket.emit("image, ")
-
+        socket.emit("image", {room: roomID, dataURL: dataURL})
         socket.emit("endStroke", current);
       });
 
