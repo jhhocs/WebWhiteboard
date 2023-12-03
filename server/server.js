@@ -9,6 +9,9 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 // const User = require("./user");
 
+var myDB;
+var myColl;
+
 const app = express();
 app.use(cors());
 const server = createServer(app);
@@ -30,36 +33,57 @@ const database = new MongoClient(process.env.MONGODB_SERVER, {
 });
 
 async function connect() {
-  // try {
+  try {
     // Connect the client to the server	(optional starting in v4.7)
     await database.connect();
     // Send a ping to confirm a successful connection
-    const myDB = database.db("DatabaseTest");
-    const myColl = myDB.collection("CollectionTest");
-
-    // const findResult = await myColl.find();
-
-    // for await (const doc of findResult) {
-    //   console.log(doc);
-    // }
-
-    // myColl.find();
-    // await database.db("DatabaseTest").command({ ping: 1 });  
-    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
-
-    // const myColl = database.collection("pizzaMenu");
-    // const doc = { name: "Other pizza", shape: "round" };
-    // const result = await myColl.insertOne(doc);
-    // console.log(
-    //   `A document was inserted with the _id: ${result.insertedId}`,
-    // );
-  // } 
-  // finally {
-  //   // Ensures that the client will close when you finish/error
-  //   await database.close();
-  // }
+    myDB = database.db("WebWhiteboard");
+    myColl = myDB.collection("Rooms");
+  } 
+  finally {
+    io.on("connection", (socket) => {
+      console.log("User connected: " + socket.id);
+      // socket.join("temp");
+    
+      socket.on("joinRoom", async (room) => {
+        socket.join(room);
+        const query = {room: room}
+        const result = await myColl.findOne(query);
+        io.to(room).emit("loadImage", result.dataURL);
+        socket.join("temp");
+      });
+    
+      socket.on("clear", (room) => {
+        // io.to("temp").emit('clear');
+        io.to(room).emit("clear");
+        // io.emit('clear');
+      });
+      socket.on("startStroke", (line) => {
+        console.log(line.room);
+        io.to(line.room).emit("startStroke", line.line);
+        // io.emit('startStroke', line);
+      });
+      socket.on("endStroke", (line) => {
+        io.to(line.room).emit("endStroke", line.line);
+        // io.emit('endStroke', line);
+      });
+      socket.on("stroke", (line) => {
+        io.to(line.room).emit("stroke", line.line);
+        // io.emit('stroke', line);
+      });
+      socket.on("disconnect", () => {
+        console.log("User disconnected");
+      });
+      socket.on("image", (image) => {
+        const query = {room: image.room};
+        const update = { $set: { room: image.room, dataURL: image.dataURL }};
+        const options = { upsert: true };
+        myColl.updateOne(query, update, options);
+      })
+    });
+  }
 }
-// connect().catch(console.dir);
+connect().catch(console.dir);
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -83,41 +107,6 @@ app.post("/users", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-});
-
-io.on("connection", (socket) => {
-  console.log("User connected: " + socket.id);
-  // socket.join("temp");
-
-  socket.on("joinRoom", (room) => {
-    socket.join(room);
-    // socket.join("temp");
-  });
-
-  socket.on("clear", (room) => {
-    // io.to("temp").emit('clear');
-    io.to(room).emit("clear");
-    // io.emit('clear');
-  });
-  socket.on("startStroke", (line) => {
-    console.log(line.room);
-    io.to(line.room).emit("startStroke", line.line);
-    // io.emit('startStroke', line);
-  });
-  socket.on("endStroke", (line) => {
-    io.to(line.room).emit("endStroke", line.line);
-    // io.emit('endStroke', line);
-  });
-  socket.on("stroke", (line) => {
-    io.to(line.room).emit("stroke", line.line);
-    // io.emit('stroke', line);
-  });
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
-  socket.on("image", (buffer) => {
-    io.emit("image", buffer)
-  })
 });
 
 // Define the port
