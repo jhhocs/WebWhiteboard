@@ -49,9 +49,15 @@ async function connect() {
       socket.on("joinRoom", async (room) => {
         socket.join(room);
         const query = {room: room}
-        const result = await myColl.findOne(query);
-        io.to(room).emit("loadImage", result.dataURL);
-        socket.join("temp");
+        // const result = await myColl.findOne(query)
+        myColl.findOne(query).then((result) => {
+          if(result == null) {
+            return;
+          }
+          io.to(room).emit("loadImage", result.dataURL);
+        });
+
+        // socket.join("temp");
       });
     
       socket.on("clear", (room) => {
