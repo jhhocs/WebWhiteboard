@@ -33,6 +33,7 @@ const database = new MongoClient(process.env.MONGODB_SERVER, {
 });
 
 async function connect() {
+
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await database.connect();
