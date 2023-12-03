@@ -146,6 +146,15 @@ function App() {
         stroke(line);
       });
 
+      socket.on("loadImage", (dataURL) => {
+        var img = new Image();
+        img.src = dataURL;
+        img.onload=start;
+        function start() {
+          context.drawImage(img, 0, 0)
+        } 
+      });
+
       socket.on("clear", clear);
 
       // Set the canvas size
@@ -206,6 +215,8 @@ function App() {
       canvas.addEventListener("mouseup", function (e) {
         endStroke(current.line);
 
+        var dataURL = canvas.toDataURL();
+        socket.emit("image", {room: roomID, dataURL: dataURL})
         socket.emit("endStroke", current);
       });
 
