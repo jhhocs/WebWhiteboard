@@ -87,30 +87,30 @@ async function connect() {
 connect().catch(console.dir);
 
 // Middleware to parse JSON request bodies
-app.use(express.json());
+// app.use(express.json());
 app.use(cors());
 
-// Express Routes
-app.get("/users", async (req, res) => {
-  try {
-    const users = await User.getAllUsers();
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// // Express Routes
+// app.get("/users", async (req, res) => {
+//   try {
+//     const users = await User.getAllUsers();
+//     res.json(users);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
-app.post("/users", async (req, res) => {
-  try {
-    const { username, email } = req.body;
-    const newUser = await User.createUser(username, email);
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// app.post("/users", async (req, res) => {
+//   try {
+//     const { username, email } = req.body;
+//     const newUser = await User.createUser(username, email);
+//     res.status(201).json(newUser);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
-// Define the port
+// // Define the port
 const port = process.env.PORT || 3001;
 
 server.listen(3001, () => {
