@@ -3,6 +3,8 @@ import { useState, useRef, useEffect, forwardRef } from "react";
 import CircularCursor from "./CircularCursor";
 import "./App.css";
 import { socket } from "./socket";
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
 
 const Toolbar = forwardRef(function Toolbar(props, ref) {
   return (
@@ -146,6 +148,15 @@ function App() {
         stroke(line);
       });
 
+      socket.on("image", (buffer) => {
+        var img = new Image();
+        img.src = buffer;
+        img.onload=start;
+        function start() {
+          context.drawImage(img, 0, 0)
+        } 
+      })
+
       socket.on("clear", clear);
 
       // Set the canvas size
@@ -205,6 +216,27 @@ function App() {
 
       canvas.addEventListener("mouseup", function (e) {
         endStroke(current.line);
+
+        var dataURL = canvas.toDataURL();
+        socket.emit("image", dataURL)
+
+        // var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        // var buffer = imageData.data;
+        // console.log(buffer)
+        // // setTimeout(() => {
+        //   clear();
+        // // }, 2000)
+
+        // // setTimeout(() => {
+        // socket.emit("image", {image: true, buffer: buffer.toString('base64')});
+          // var array = new Uint8ClampedArray(buffer);
+          // var image = new ImageData(array, canvas.width, canvas.height);
+
+          // context.putImageData(image, 0, 0)
+        // }, 4000)
+
+        // console.log(buffer);
+        // socket.emit("image, ")
 
         socket.emit("endStroke", current);
       });

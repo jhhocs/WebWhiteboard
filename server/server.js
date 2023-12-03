@@ -59,7 +59,7 @@ async function connect() {
   //   await database.close();
   // }
 }
-connect().catch(console.dir);
+// connect().catch(console.dir);
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -115,6 +115,9 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
+  socket.on("image", (buffer) => {
+    io.emit("image", buffer)
+  })
 });
 
 // Define the port
