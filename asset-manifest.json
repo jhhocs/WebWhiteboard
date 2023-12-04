@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.css": "/WebWhiteboard/static/css/main.7d6db7d1.css",
-    "main.js": "/WebWhiteboard/static/js/main.dedbd4b2.js",
+    "main.css": "/WebWhiteboard/static/css/main.71967b40.css",
+    "main.js": "/WebWhiteboard/static/js/main.8e721bb6.js",
     "static/js/787.d5fa4d18.chunk.js": "/WebWhiteboard/static/js/787.d5fa4d18.chunk.js",
     "static/media/notepad.png": "/WebWhiteboard/static/media/notepad.99f59d7c0667490200fb.png",
+    "static/media/brush.png": "/WebWhiteboard/static/media/brush.f6cbd076cbd878c794c1.png",
     "index.html": "/WebWhiteboard/index.html",
-    "main.7d6db7d1.css.map": "/WebWhiteboard/static/css/main.7d6db7d1.css.map",
-    "main.dedbd4b2.js.map": "/WebWhiteboard/static/js/main.dedbd4b2.js.map",
+    "main.71967b40.css.map": "/WebWhiteboard/static/css/main.71967b40.css.map",
+    "main.8e721bb6.js.map": "/WebWhiteboard/static/js/main.8e721bb6.js.map",
     "787.d5fa4d18.chunk.js.map": "/WebWhiteboard/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7d6db7d1.css",
-    "static/js/main.dedbd4b2.js"
+    "static/css/main.71967b40.css",
+    "static/js/main.8e721bb6.js"
   ]
 }
