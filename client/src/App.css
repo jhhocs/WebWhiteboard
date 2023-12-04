@@ -6,11 +6,15 @@
 }
 
 #toolbar {
-   background-color: #f1f1f1;;
-   margin-left: 0.1rem;
-   padding: 10px;
+   padding: 0.75rem;
+   border-radius: 1rem;
+   border: 0.1rem solid black;
+   border-left: none;
+   /* background-color: #f1f1f1; */
+   background-color: white;
    display: flex;
-   justify-content: start;
+   flex-direction: column;
+   justify-content: center;
    align-items: center;
    /* flex-direction: column; */
    gap: 1rem;
@@ -26,8 +30,8 @@
 
 #clear {
    border-radius: 50%;
-   height: 2rem;
-   width: 2rem;
+   height: 2.75rem;
+   width: 2.75rem;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -35,8 +39,17 @@
 
 #eraser {
    border-radius: 50%;
-   height: 2rem;
-   width: 2rem;
+   height: 2.75rem;
+   width: 2.75rem;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+#brush {
+   border-radius: 50%;
+   height: 2.75rem;
+   width: 2.75rem;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -44,31 +57,78 @@
 
 #notepad {
    border-radius: 50%;
-   height: 2rem;
-   width: 2rem;
+   height: 2.75rem;
+   width: 2.75rem;
    display: flex;
    justify-content: center;
    align-items: center;
 }
 
 #clear img {
-   width: 1.5rem;
+   width: 1.75rem;
    pointer-events: none;
 }
 
 #eraser img {
-   width: 1.25rem;
+   width: 1.5rem;
+   pointer-events: none;
+}
+
+#brush img {
+   width: 1.5rem;
    pointer-events: none;
 }
 
 #notepad img {
-   width: 1rem;
+   width: 1.5rem;
    pointer-events: none;
 }
 
-.color-input-wrapper {
-   height: 2rem;
+.toolbar-open {
+   height: 100%;
+   position: absolute;
+   display: flex;
+   flex-direction: row;
+   justify-self: center;
+   transition: all 200ms;
+   align-items: center;
+}
+
+.toolbar-close {
+   height: 100%;
+   position: absolute;
+   display: flex;
+   flex-direction: row;
+   justify-self: center;
+   align-items: center;
+   transition: all 200ms;
+   transform: translateX(-4.5rem);
+}
+
+.arrow-close {
+   transform: rotate(0deg);
+   transition: all 200ms;
+   border: none;
+   background: none;
+}
+
+.arrow-open {
+   transform: rotate(180deg);
+   transition: all 200ms;
+   border: none;
+   background: none;
+}
+
+.arrow-icon {
    width: 2rem;
+   height: 2rem;
+   background-color: white;
+}
+
+.color-input-wrapper {
+   height: 2.75rem;
+   width: 2.75rem;
+   border: 0.1rem solid black;
    overflow: hidden;
    border-radius: 50%;
    display: inline-flex;
@@ -78,8 +138,8 @@
 
  .color-input-wrapper  input[type=color] {
    position: absolute;
-   height: 4rem;
-   width: 4rem;
+   height: 5rem;
+   width: 5rem;
    top: 50%;
    left: 50%;
    transform: translate(-50%, -50%);

@@ -3,30 +3,27 @@ import { useState, useRef, useEffect, forwardRef } from "react";
 import CircularCursor from "./CircularCursor";
 import "./App.css";
 import { socket } from "./socket";
+import Brush from "./components/Brush/Brush";
 
-const Toolbar = forwardRef(function Toolbar(props, ref) {
+const Toolbar = forwardRef(function Toolbar(props, ref) {  
   return (
-    <div id="toolbar" ref={ref}>
-      <button id="clear" onClick={() => handleButtonClick('default')}>
-        <img src={require("./assets/clear.png")} alt="clear icon" />
-      </button>
-      <div className="color-input-wrapper">
-        <input type="color" id="color-picker" onClick={() => handleButtonClick('default')}/>
+    <div className="toolbar-container">
+      <div id="toolbar" ref={ref}>
+        <button id="clear" onClick={() => handleButtonClick('default')}>
+          <img src={require("./assets/clear.png")} alt="clear icon" />
+        </button>
+        <button id="eraser" onClick={() => handleButtonClick(`url(${require("./assets/erasercursor.png")}), auto`)}>
+          <img src={require("./assets/eraser.png")} alt="eraser icon" />
+        </button>
+        <div className="color-input-wrapper">
+          <input type="color" id="color-picker" onClick={() => handleButtonClick('default')}/>
+        </div>
+        <Brush />
+        <button id="notepad">
+          <img src={require("./assets/notepad.png")} alt="notepad icon" input="true" type="color" id="color-picker2" />
+        </button>
+        {/* <!-- Add more tools as needed --> */}
       </div>
-      <button id="eraser" onClick={() => handleButtonClick(`url(${require("./assets/erasercursor.png")}), auto`)}>
-        <img src={require("./assets/eraser.png")} alt="eraser icon" />
-      </button>
-      <label htmlFor="width-picker">Radius</label>
-      <input
-        defaultValue="2"
-        type="number"
-        id="width-picker"
-        name="width-picker"
-      />
-      <button id="notepad">
-        <img src={require("./assets/notepad.png")} alt="notepad icon" input="true" type="color" id="color-picker2" />
-      </button>
-      {/* <!-- Add more tools as needed --> */}
     </div>
   );
 });
@@ -51,6 +48,9 @@ function App() {
   const [cursorSize, setCursorSize] = useState(2);
   const [isNotepadActive, setIsNotepadActive] = useState(false);
   const [notepadContent, setNotepadContent] = useState("");
+  const [toolbarClasses, setToolbarClasses] = useState("toolbar-open");
+  const [arrowClass, setArrowClass] = useState("arrow-open")
+  const [toolbarState, setToolbarState] = useState(true);
 
   // Additional state for tracking sticky note position
   const [stickyNotePosition, setStickyNotePosition] = useState({
@@ -59,6 +59,13 @@ function App() {
   });
 
   const [isDragging, setIsDragging] = useState(false);
+
+  // Function to handle opening/closing toolbar
+  const handleToolbar = (e) => {
+    setToolbarState(toolbarState ? false : true);
+    setToolbarClasses(toolbarState ? "toolbar-close" : "toolbar-open");
+    setArrowClass(toolbarState ? "arrow-close" : "arrow-open");
+  }
 
   // Function to handle dragging start
   const handleDragStart = (e) => {
@@ -92,7 +99,6 @@ function App() {
   useEffect(() => {
     const toolbar = toolbarRef.current;
     const canvas = canvasRef.current;
-
     if (userID) {
       start();
     }
@@ -265,6 +271,10 @@ function App() {
           current.line.lineWidth = e.target.value;
           setCursorSize(e.target.value)
         }
+        if (e.target.id === "width-slider-picker") {
+          current.line.lineWidth = e.target.value;
+          setCursorSize(e.target.value)
+        }
       });
 
       function toggleNotepad() {
@@ -342,8 +352,13 @@ function App() {
         </div>
       )}
       <CircularCursor position={cursorPosition} size={cursorSize}/>
-      <Toolbar ref={toolbarRef} />
-      <Canvas ref={canvasRef} />
+      <div className={toolbarClasses}>
+        <Toolbar ref={toolbarRef}/>
+        <button className={arrowClass} onClick={handleToolbar}>
+          <img className="arrow-icon" src={require("./assets/arrow.png")} alt="arrow icon" />
+        </button>
+      </div>
+      <Canvas ref={canvasRef}/>
     </div>
   );
 }
