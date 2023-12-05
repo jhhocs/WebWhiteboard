@@ -238,6 +238,8 @@ function App() {
 
       function clear() {
         context.clearRect(0, 0, canvas.width, canvas.height);
+        var dataURL = canvas.toDataURL();
+        socket.emit("image", {room: roomID, dataURL: dataURL})
         console.log("clear");
       }
 
