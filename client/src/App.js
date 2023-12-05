@@ -323,6 +323,11 @@ function App() {
 
   return (
     <div className="App">
+      {/* <Displays the current room ID */}
+      <div className="room-ID">
+      <span style={{ fontWeight: 'bold' }}>Room ID:
+      </span>{roomID && <span>{roomID}</span>}
+      </div>
       {isNotepadActive && (
         <div
           style={{
