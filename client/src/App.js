@@ -18,7 +18,7 @@ function App() {
   const [isNotepadActive, setIsNotepadActive] = useState(false);
   const [notepadContent, setNotepadContent] = useState("");
   const [toolbarClasses, setToolbarClasses] = useState("toolbar-open");
-  const [arrowClass, setArrowClass] = useState("arrow-open")
+  const [arrowClass, setArrowClass] = useState("arrow-open");
   const [toolbarState, setToolbarState] = useState(true);
 
   // Additional state for tracking sticky note position
@@ -27,42 +27,56 @@ function App() {
     left: 50,
   });
 
+  const toggleNotepad = () => {
+    setIsNotepadActive((prev) => !prev);
+  };
+
   const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
   // Function to handle opening/closing toolbar
   const handleToolbar = (e) => {
     setToolbarState(toolbarState ? false : true);
     setToolbarClasses(toolbarState ? "toolbar-close" : "toolbar-open");
     setArrowClass(toolbarState ? "arrow-close" : "arrow-open");
-  }
+  };
 
   // Function to handle dragging start
   const handleDragStart = (e) => {
     setIsDragging(true);
+
+    // Calculate the offset from the mouse position to the top-left corner of the notepad
+    const notepadElem = e.currentTarget;
+    const rect = notepadElem.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+
+    setDragOffset({ x: offsetX, y: offsetY });
   };
-  
+
   // Function to handle dragging end
   const handleDragEnd = () => {
     setIsDragging(false);
   };
-  
+
   // Function to handle dragging
   const handleDrag = (e) => {
     if (isDragging) {
-      const newTop = e.clientY - 10; // Adjust the offset as needed
-      const newLeft = e.clientX - 10; // Adjust the offset as needed
+      // Adjust the position by subtracting the offset
+      const newTop = e.clientY - dragOffset.y;
+      const newLeft = e.clientX - dragOffset.x;
       setStickyNotePosition({ top: newTop, left: newLeft });
     }
   };
-  
-    useEffect(() => {
-      document.addEventListener("mousemove", handleDrag);
-      document.addEventListener("mouseup", handleDragEnd);
-  
-      return () => {
-        document.removeEventListener("mousemove", handleDrag);
-        document.removeEventListener("mouseup", handleDragEnd);
-      };
+
+  useEffect(() => {
+    document.addEventListener("mousemove", handleDrag);
+    document.addEventListener("mouseup", handleDragEnd);
+
+    return () => {
+      document.removeEventListener("mousemove", handleDrag);
+      document.removeEventListener("mouseup", handleDragEnd);
+    };
   }, [isDragging]);
 
   useEffect(() => {
@@ -73,7 +87,7 @@ function App() {
     }
 
     // Handles case where user joins from Home screen
-    if(socket.connected) {
+    if (socket.connected) {
       socket.emit("joinRoom", roomID);
     }
 
@@ -124,10 +138,10 @@ function App() {
       socket.on("loadImage", (dataURL) => {
         var img = new Image();
         img.src = dataURL;
-        img.onload=start;
+        img.onload = start;
         function start() {
-          context.drawImage(img, 0, 0)
-        } 
+          context.drawImage(img, 0, 0);
+        }
       });
 
       socket.on("clear", clear);
@@ -191,7 +205,7 @@ function App() {
         endStroke(current.line);
 
         var dataURL = canvas.toDataURL();
-        socket.emit("image", {room: roomID, dataURL: dataURL})
+        socket.emit("image", { room: roomID, dataURL: dataURL });
         socket.emit("endStroke", current);
       });
 
@@ -204,7 +218,7 @@ function App() {
       function clear() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         var dataURL = canvas.toDataURL();
-        socket.emit("image", {room: roomID, dataURL: dataURL})
+        socket.emit("image", { room: roomID, dataURL: dataURL });
         console.log("clear");
       }
 
@@ -236,17 +250,17 @@ function App() {
         // Width picker
         if (e.target.id === "width-picker") {
           current.line.lineWidth = e.target.value;
-          setCursorSize(e.target.value)
+          setCursorSize(e.target.value);
         }
         if (e.target.id === "width-slider-picker") {
           current.line.lineWidth = e.target.value;
-          setCursorSize(e.target.value)
+          setCursorSize(e.target.value);
         }
       });
 
       function toggleNotepad() {
         setIsNotepadActive((prev) => !prev);
-        
+
         if (!isNotepadActive) {
           // Set initial sticky note position when notepad becomes active
           setStickyNotePosition({
@@ -254,14 +268,16 @@ function App() {
             left: 50, // Set the desired initial left position
           });
         }
-      
+
         reduceCanvasSize();
       }
 
       function reduceCanvasSize() {
         // Adjust canvas size for notepad
         const notepadWidth = 300;
-        const canvasWidth = isNotepadActive ? window.innerWidth - notepadWidth : window.innerWidth;
+        const canvasWidth = isNotepadActive
+          ? window.innerWidth - notepadWidth
+          : window.innerWidth;
 
         canvas.width = canvasWidth;
 
@@ -313,20 +329,24 @@ function App() {
               border: "1px solid #ccc",
               padding: "10px",
               resize: "none",
-              background: "yellow"
+              background: "#FFFF88",
             }}
           />
         </div>
       )}
-      <CircularCursor position={cursorPosition} size={cursorSize}/>
+      <CircularCursor position={cursorPosition} size={cursorSize} />
       <div className={toolbarClasses}>
         {/* <Toolbar ref={toolbarRef}/> */}
-        <Toolbar ref = {toolbarRef}/>
+        <Toolbar ref={toolbarRef} onToggleNotepad={toggleNotepad} />
         <button className={arrowClass} onClick={handleToolbar}>
-          <img className="arrow-icon" src={require("./assets/arrow.png")} alt="arrow icon" />
+          <img
+            className="arrow-icon"
+            src={require("./assets/arrow.png")}
+            alt="arrow icon"
+          />
         </button>
       </div>
-      <Canvas ref={canvasRef}/>
+      <Canvas ref={canvasRef} />
     </div>
   );
 }
