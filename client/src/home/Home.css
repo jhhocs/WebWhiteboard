@@ -6,12 +6,24 @@
 }
 
 main {
-    padding: 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 2rem;
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 1rem;
+}
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
     min-height: 100vh;
+    background-image: url('../assets/home-bg.png')
 }
 
 #startButton, #joinButton{
@@ -29,4 +41,9 @@ main {
 #startButton:hover, #joinButton:hover {
     background-color: #05BB7E;
     cursor: pointer;
+}
+
+.flex-container {
+    display: flex;
+    gap: 2rem;
 }
