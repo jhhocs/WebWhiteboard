@@ -8,7 +8,7 @@ import Canvas from "./whiteboard/Canvas";
 
 function App() {
   let { roomID } = useParams();
-  let userID = socket.id;
+  const userID = useRef(socket.id); // Use useRef for userID
   // console.log(roomID);
 
   const toolbarRef = useRef(null);
@@ -77,12 +77,12 @@ function App() {
       document.removeEventListener("mousemove", handleDrag);
       document.removeEventListener("mouseup", handleDragEnd);
     };
-  }, [isDragging]);
+  }, [isDragging, handleDrag]);
 
   useEffect(() => {
     const toolbar = toolbarRef.current;
     const canvas = canvasRef.current;
-    if (userID) {
+    if (userID.current) {
       start();
     }
 
@@ -92,7 +92,7 @@ function App() {
     }
 
     socket.on("connect", () => {
-      userID = socket.id;
+      userID.current = socket.id; // Update the .current property
       // console.log(userID);
       socket.emit("joinRoom", roomID);
       start();
@@ -225,7 +225,7 @@ function App() {
       toolbar.addEventListener("click", (e) => {
         // Clear tool
         if (e.target.id === "clear") {
-          clear();
+          clearCanvas();
           socket.emit("clear", roomID);
         }
         // Eraser tool
@@ -273,13 +273,22 @@ function App() {
       }
 
       function reduceCanvasSize() {
-        // Adjust canvas size for notepad
+        // Save the current canvas state
+        const dataURL = canvasRef.current.toDataURL();
+
+        // Resize the canvas
         const notepadWidth = 300;
         const canvasWidth = isNotepadActive
           ? window.innerWidth - notepadWidth
           : window.innerWidth;
+        canvasRef.current.width = canvasWidth;
 
-        canvas.width = canvasWidth;
+        // Restore the canvas state
+        const img = new Image();
+        img.onload = () => {
+          canvasRef.current.getContext("2d").drawImage(img, 0, 0);
+        };
+        img.src = dataURL;
 
         // Adjust textarea/input width
         const textarea = document.querySelector("textarea");
@@ -289,9 +298,14 @@ function App() {
       }
 
       function clearCanvas() {
-        const context = canvas.getContext("2d");
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        console.log("clear");
+        const context = canvasRef.current.getContext("2d");
+        context.clearRect(
+          0,
+          0,
+          canvasRef.current.width,
+          canvasRef.current.height
+        );
+        console.log("Canvas cleared");
       }
 
       // Add event listener for mouse movement
@@ -305,7 +319,7 @@ function App() {
         document.removeEventListener("mousemove", moveCursor);
       };
     }
-  }, []);
+  }, [roomID]);
 
   return (
     <div className="App">
