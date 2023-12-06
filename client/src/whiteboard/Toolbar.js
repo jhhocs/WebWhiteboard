@@ -28,7 +28,7 @@ const Toolbar = forwardRef(function Toolbar(props, ref) {
       <div className="toolbar-container">
         <div id="toolbar" ref={ref}>
           <IconButton>
-            <button id="clear" onClick={() => handleButtonClick("default")}>
+            <button id="clear">
               <img src={require("../assets/clear.png")} alt="clear icon" />
             </button>
           </IconButton>
