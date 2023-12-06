@@ -12,10 +12,10 @@ function JoinRoomPopup(props) {
                     { props.children }
                     <TextField id="outlined-basic" label="Room Id" value={roomID} variant="outlined" onChange={(e) => setRoomID(e.target.value)}/>
                     <div className = "button-container">
-                        <Button variant="outlined" onClick = {cancel} color='error'>Cancel</Button>
                         <Link to = {`room/${roomID}`} props = {{roomID: roomID}}>
                             <Button variant="outlined" >Join Room</Button>
                         </Link>
+                        <Button variant="outlined" onClick = {cancel} color='error'>Cancel</Button>
                 </div>
             </div>
         </div>
