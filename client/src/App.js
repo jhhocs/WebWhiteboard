@@ -28,7 +28,7 @@ function App() {
   });
 
   const toggleNotepad = () => {
-    setIsNotepadActive((prev) => !prev);
+    setIsNotepadActive(prev => !prev);
   };
 
   const [isDragging, setIsDragging] = useState(false);
@@ -322,27 +322,14 @@ function App() {
         document.removeEventListener("mousemove", moveCursor);
       };
     }
-  }, [roomID, isNotepadActive]);
+  }, [roomID]);
 
   return (
     <div className="App">
       {/* <Displays the current room ID */}
       <div className="room-ID">
-        <span
-          style={{ fontWeight: "bold" }}
-          onClick={() => {
-            navigator.clipboard.writeText(roomID);
-          }}
-          title="Copy Room ID"
-        >
-          Room ID:{" "}
-        </span>
-        {roomID && <span>{roomID}</span>}
-        <img
-          className="copy-icon"
-          src={require("./assets/copy.png")}
-          alt="copy icon"
-        ></img>
+        <span style={{ fontWeight: 'bold' }} onClick={() => {navigator.clipboard.writeText(roomID)}} title = "Copy Room ID">Room ID: </span>{roomID && <span>{roomID}</span>}
+        <img className="copy-icon" src={require("./assets/copy.png")} alt="copy icon"></img>
       </div>
       {isNotepadActive && (
         <div
