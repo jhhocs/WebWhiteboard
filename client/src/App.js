@@ -17,9 +17,6 @@ function App() {
   const [cursorSize, setCursorSize] = useState(2);
   const [isNotepadActive, setIsNotepadActive] = useState(false);
   const [notepadContent, setNotepadContent] = useState("");
-  const [toolbarClasses, setToolbarClasses] = useState("toolbar-open");
-  const [arrowClass, setArrowClass] = useState("arrow-open");
-  const [toolbarState, setToolbarState] = useState(true);
 
   // Additional state for tracking sticky note position
   const [stickyNotePosition, setStickyNotePosition] = useState({
@@ -33,13 +30,6 @@ function App() {
 
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-
-  // Function to handle opening/closing toolbar
-  const handleToolbar = (e) => {
-    setToolbarState(toolbarState ? false : true);
-    setToolbarClasses(toolbarState ? "toolbar-close" : "toolbar-open");
-    setArrowClass(toolbarState ? "arrow-close" : "arrow-open");
-  };
 
   // Function to handle dragging start
   const handleDragStart = (e) => {
@@ -357,17 +347,8 @@ function App() {
         </div>
       )}
       <CircularCursor position={cursorPosition} size={cursorSize} />
-      <div className={toolbarClasses}>
         {/* <Toolbar ref={toolbarRef}/> */}
         <Toolbar ref={toolbarRef} onToggleNotepad={toggleNotepad} />
-        <button className={arrowClass} onClick={handleToolbar}>
-          <img
-            className="arrow-icon"
-            src={require("./assets/arrow.png")}
-            alt="arrow icon"
-          />
-        </button>
-      </div>
       <Canvas ref={canvasRef} />
     </div>
   );

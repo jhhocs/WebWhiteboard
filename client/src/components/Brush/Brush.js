@@ -2,21 +2,11 @@ import './Brush.css';
 import React, { useState } from 'react';
 
 
-function Brush() { 
-  const [isShown, setIsShown] = useState(false);
+function Brush(props) { 
   const [val, setVal] = useState(2);
 
-  const handleButtonClick = (cursorType) => {
-    // Modify CSS for the entire document
-    document.documentElement.style.cursor = cursorType;
-    let state = isShown ? false : true;
-    setIsShown(state);
-  };
-
-
-    if (isShown) {
+    if (props.isShown) {
       return (
-        <>
           <div className='container'>
             <div className="brush-popup">
               <label htmlFor="width-picker">Radius</label>
@@ -31,17 +21,16 @@ function Brush() {
                 value={val} min="1" max="50" 
               ></input>
             </div>
-            <button id="brush" onClick={() => handleButtonClick('default')}>
+            <button id="brush" onClick={props.handleClick}>
               <img src={require("../../assets/brush.png")} alt="brush icon" />
             </button>
           </div>
-        </>
       );
       
     }
     return (
       <>
-        <button id="brush" onClick={() => handleButtonClick('default')}>
+        <button id="brush" onClick={props.handleClick}>
           <img src={require("../../assets/brush.png")} alt="brush icon" />
         </button>
       </>
