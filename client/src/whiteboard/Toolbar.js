@@ -43,7 +43,7 @@ const Toolbar = forwardRef(function Toolbar(props, ref) {
             <input
               type="color"
               id="color-picker"
-              onClick={() => handleButtonClick("default")}
+              onClick={() => handleButtonClick(`url(${require("../assets/pencilcursor.png")})0 50, auto`)}
             />
           </div>
           <Brush isShown={isShown} handleClick={brushClick}/>
