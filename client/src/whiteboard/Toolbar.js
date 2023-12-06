@@ -1,7 +1,6 @@
 import { forwardRef, useState } from "react";
 import Brush from "../components/Brush/Brush";
 import IconButton from '@mui/material/IconButton';
-import { Icon } from "@mui/material";
 
 const Toolbar = forwardRef(function Toolbar(props, ref) {
   const { onToggleNotepad } = props;
