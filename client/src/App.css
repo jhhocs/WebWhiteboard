@@ -152,6 +152,10 @@
   pointer-events: none;
 }
 
+.toolbar-container {
+  pointer-events: auto;
+}
+
 .toolbar-open {
   height: 100%;
   position: absolute;
@@ -160,6 +164,7 @@
   justify-self: center;
   transition: all 200ms;
   align-items: center;
+  pointer-events: none;
 }
 
 .toolbar-close {
@@ -171,6 +176,7 @@
   align-items: center;
   transition: all 200ms;
   transform: translateX(-4.5rem);
+  pointer-events: none;
 }
 
 .arrow-close {
@@ -193,6 +199,8 @@
   width: 2rem;
   height: 2rem;
   background-color: white;
+  border-radius: 2rem;
+  pointer-events: auto;
 }
 
 .copy-icon {
