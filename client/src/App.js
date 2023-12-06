@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import CircularCursor from "./CircularCursor";
 import "./App.css";
 import { socket } from "./socket";
@@ -60,14 +60,17 @@ function App() {
   };
 
   // Function to handle dragging
-  const handleDrag = (e) => {
-    if (isDragging) {
-      // Adjust the position by subtracting the offset
-      const newTop = e.clientY - dragOffset.y;
-      const newLeft = e.clientX - dragOffset.x;
-      setStickyNotePosition({ top: newTop, left: newLeft });
-    }
-  };
+  const handleDrag = useCallback(
+    (e) => {
+      if (isDragging) {
+        // Adjust the position by subtracting the offset
+        const newTop = e.clientY - dragOffset.y;
+        const newLeft = e.clientX - dragOffset.x;
+        setStickyNotePosition({ top: newTop, left: newLeft });
+      }
+    },
+    [isDragging, dragOffset]
+  );
 
   useEffect(() => {
     document.addEventListener("mousemove", handleDrag);
@@ -319,14 +322,27 @@ function App() {
         document.removeEventListener("mousemove", moveCursor);
       };
     }
-  }, [roomID]);
+  }, [roomID, isNotepadActive]);
 
   return (
     <div className="App">
       {/* <Displays the current room ID */}
       <div className="room-ID">
-        <span style={{ fontWeight: 'bold' }} onClick={() => {navigator.clipboard.writeText(roomID)}} title = "Copy Room ID">Room ID: </span>{roomID && <span>{roomID}</span>}
-        <img className="copy-icon" src={require("./assets/copy.png")} alt="copy icon"></img>
+        <span
+          style={{ fontWeight: "bold" }}
+          onClick={() => {
+            navigator.clipboard.writeText(roomID);
+          }}
+          title="Copy Room ID"
+        >
+          Room ID:{" "}
+        </span>
+        {roomID && <span>{roomID}</span>}
+        <img
+          className="copy-icon"
+          src={require("./assets/copy.png")}
+          alt="copy icon"
+        ></img>
       </div>
       {isNotepadActive && (
         <div
