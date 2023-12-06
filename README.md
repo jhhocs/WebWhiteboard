@@ -12,7 +12,7 @@ Run client or server:
 1. Navigate into client or server directory
 2. Run ```npm start```
 
-Deploying client to GitHub pages with GitHub Actions: (Recommended)
+Manually deploying client to GitHub pages with GitHub Actions:
 
 1. Navigate to the Actions tab
 2. In the left sidebar, select "Deploy to GitHub Pages"
