@@ -195,6 +195,13 @@
   background-color: white;
 }
 
+.copy-icon {
+  padding-left: 1rem;
+  /* width: 2rem; */
+  height: 2rem;
+  background-color: transparent;
+}
+
 .color-input-wrapper {
   height: 2.75rem;
   width: 2.75rem;
@@ -268,4 +275,5 @@
  
  .room-ID:hover::before {
    opacity: 0;
+   cursor:pointer;
  }

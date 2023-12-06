@@ -325,8 +325,8 @@ function App() {
     <div className="App">
       {/* <Displays the current room ID */}
       <div className="room-ID">
-      <span style={{ fontWeight: 'bold' }}>Room ID:
-      </span>{roomID && <span>{roomID}</span>}
+        <span style={{ fontWeight: 'bold' }} onClick={() => {navigator.clipboard.writeText(roomID)}} title = "Copy Room ID">Room ID: </span>{roomID && <span>{roomID}</span>}
+        <img className="copy-icon" src={require("./assets/copy.png")} alt="copy icon"></img>
       </div>
       {isNotepadActive && (
         <div
