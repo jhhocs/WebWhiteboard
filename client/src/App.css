@@ -6,7 +6,7 @@
 }
 
 #toolbar {
-  padding: 0.75rem;
+  padding: 0.5rem;
   border-radius: 1rem;
   border: 0.1rem solid black;
   border-left: none;
@@ -152,6 +152,10 @@
   pointer-events: none;
 }
 
+.toolbar-container {
+  pointer-events: auto;
+}
+
 .toolbar-open {
   height: 100%;
   position: absolute;
@@ -160,6 +164,7 @@
   justify-self: center;
   transition: all 200ms;
   align-items: center;
+  pointer-events: none;
 }
 
 .toolbar-close {
@@ -171,6 +176,7 @@
   align-items: center;
   transition: all 200ms;
   transform: translateX(-4.5rem);
+  pointer-events: auto;
 }
 
 .arrow-close {
@@ -192,7 +198,7 @@
 .arrow-icon {
   width: 2rem;
   height: 2rem;
-  background-color: white;
+  pointer-events: auto;
 }
 
 .copy-icon {
