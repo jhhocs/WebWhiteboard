@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useRef, useEffect, useCallback } from "react";
-import CircularCursor from "./CircularCursor";
+import CircularCursor from "./whiteboard/CircularCursor";
 import "./App.css";
 import { socket } from "./socket";
 import Toolbar from "./whiteboard/Toolbar";
@@ -332,6 +332,7 @@ function App() {
           onMouseDown={handleDragStart}
         >
           <textarea
+            id = "notepad-text-area"
             value={notepadContent}
             onChange={(e) => setNotepadContent(e.target.value)}
             placeholder="Type here..."
