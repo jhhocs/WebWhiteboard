@@ -176,7 +176,7 @@
   align-items: center;
   transition: all 200ms;
   transform: translateX(-4.5rem);
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 .arrow-close {
